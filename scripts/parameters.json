@@ -1,0 +1,26 @@
+{
+    "buyer": "0xB47d72F89Acc9664e7F1207393c709779a80AEE4",
+    "seller": "0x1022c78851082398A72e87abB526F10B75512bAc",
+    "parameters":
+    {
+        "token": "0xc72042Ee645be7eB7EB9A689f636ddc0bf5c8717",
+        "AddressReferenceRate": "0x7422A64372f95F172962e2C0f371E0D9531DF276",
+        "decimal": 7,
+        "period": 90,
+        "NP": 1000000000000000,
+        "target": 531005,
+        "upperLimit": 556016,
+        "bottomLimit": 450035,
+        "inception": 1683641034
+    },
+    "list":[  "0xc72042Ee645be7eB7EB9A689f636ddc0bf5c8717",
+                    "0x7422A64372f95F172962e2C0f371E0D9531DF276",
+                    7,
+                    90,
+                    1000000000000000000000, 
+                    531005,
+                    556016,
+                    450035,
+                    1683641034],
+    "feeRate":100
+}
