@@ -1,5 +1,5 @@
 # forwardContract
-construct a forward financial contract(FRA) in blockchain
+Construct a forward financial contract(FRA) in blockchain
 
 
 ## oracle service
