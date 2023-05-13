@@ -69,20 +69,20 @@ contract forwardUnit{
         if (owner == buyer0 && (!readybuyer0))
         {
             require(buyAmount == amount,"the required buyAmount is not same as given fund");
-            (bool sucess,) = currency0.call(abi.encodeWithSignature("transferFrom(address,address,uint)",buyer0,address(this),amount) );
-            // WETH9A(currency0).transferFrom(buyer0,address(this),amount);
+            //(bool sucess,) = currency0.call(abi.encodeWithSignature("transferFrom(address,address,uint)",buyer0,address(this),amount) );
+            WETH9A(currency0).transferFrom(buyer0,address(this),amount);
             readybuyer0 = true;
         }
         else if (owner == seller0 && (!readyseller0))
         {
             require(sellAmount == amount,"the required sellAmount is not same as given fund");
-            (bool sucess,) = currency0.call(abi.encodeWithSignature("transferFrom(address,address,uint)",seller0,address(this),amount) );
-            // WETH9A(currency0).transferFrom(buyer0,address(this),amount);
+            //(bool sucess,) = currency0.call(abi.encodeWithSignature("transferFrom(address,address,uint)",seller0,address(this),amount) );
+            WETH9A(currency0).transferFrom(buyer0,address(this),amount);
             readyseller0 = true;
         }
         if (readybuyer0 && readyseller0 &&(!active0))
         {
-            require(WETH9A(currency0).balanceOf(address(this)) >= buyAmount + sellAmount,"fund is mismatch from sum of buyAmount and sellAmount");            
+            //require(WETH9A(currency0).balanceOf(address(this)) >= buyAmount + sellAmount,"fund is mismatch from sum of buyAmount and sellAmount");            
             active0 = true;
             console.log("forward is active and do not forget to register contract address in chainlink");
             chainLinkOracle oracle = new chainLinkOracle(data0.AddressReferenceRate,address(this),10);
