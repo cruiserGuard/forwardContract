@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
 //import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -32,7 +32,13 @@ contract forwardUnit {
     uint64 private decimal_rateQ; // digit for rate of 90-Day ETH APR
 
     // enum STATUS{expire,hitUpper,hitBottom}
-    event Setup(address buyer, address seller,uint32 target,uint32 period, uint128 NP);
+    event Setup(
+        address buyer,
+        address seller,
+        uint32 target,
+        uint32 period,
+        uint128 NP
+    );
 
     constructor(
         address buyer_,
@@ -66,6 +72,11 @@ contract forwardUnit {
         // upperLimit is defined maximum of sell side deposited fund
         buyAmount = calculate(false, data0.bottomLimit);
         // bottomLiimit is defined maximum of buy side deposited fund
+
+        require(
+            buyAmount > fee0 && sellAmount > fee0,
+            "upperLimit or bottomLimit too low, causing buyAmount or sellAmount insufficient to pay fee"
+        );
     }
 
     function addFund(address owner, uint128 amount) public payable {
@@ -102,7 +113,7 @@ contract forwardUnit {
                 address(this),
                 10
             );
-            emit Setup(buyer0, seller0,data0.target,data0.period, data0.NP);
+            emit Setup(buyer0, seller0, data0.target, data0.period, data0.NP);
         }
     }
 
@@ -113,7 +124,6 @@ contract forwardUnit {
         );
         provider0 = NewProvider;
     }
-
 
     function isActive() public view returns (bool) {
         return active0;
@@ -128,20 +138,24 @@ contract forwardUnit {
             address provider,
             uint256 buyAmount_,
             uint256 sellAmount_,
+            uint256 fee,
             contractData memory
         )
     {
-        return (buyer0, seller0, provider0, buyAmount, sellAmount, data0);
+        return (buyer0, seller0, provider0, buyAmount, sellAmount, fee0, data0);
     }
 
-    function payOff(bool payBuyer) internal
-    {
-        require(WETH9(currency0).balanceOf(address(this)) >buyAmount + sellAmount - fee0,"fund is insufficient to payoff");
+    function payOff(bool payBuyer) internal {
+        require(
+            WETH9(currency0).balanceOf(address(this)) >
+                buyAmount + sellAmount - fee0,
+            "fund is insufficient to payoff"
+        );
 
         // bool p = referenceRate0 >= data0.target ? true : false;
-        uint256 change = calculate(payBuyer, referenceRate0);    
+        uint256 change = calculate(payBuyer, referenceRate0);
         if (payBuyer) {
-            change = change >= sellAmount? sellAmount:change;
+            change = change >= sellAmount ? sellAmount : change;
             WETH9(currency0).transferFrom(
                 payable(address(this)),
                 buyer0,
@@ -153,7 +167,7 @@ contract forwardUnit {
                 sellAmount - change
             );
         } else {
-            change = change >= buyAmount? buyAmount:change;
+            change = change >= buyAmount ? buyAmount : change;
             WETH9(currency0).transferFrom(
                 payable(address(this)),
                 buyer0,
@@ -198,9 +212,11 @@ contract forwardUnit {
         // {
         //     change = data0.NP*(tempdata)*(k << FixedPoint32.RESOLUTION)/((1 << (FixedPoint32.RESOLUTION+decimal_rateQ)) + rate*k) / FixedPoint32.Q32 ;
         // }
-
-        change =data0.NP *
-                (((temprate) * (k << FixedPoint32.RESOLUTION)) /((decimal_rateQ << FixedPoint32.RESOLUTION) + rate * k))) >>FixedPoint32.RESOLUTION;
+        change =
+            (data0.NP *
+                (((temprate) * (k << FixedPoint32.RESOLUTION)) /
+                    ((decimal_rateQ << FixedPoint32.RESOLUTION) + rate * k))) >>
+            FixedPoint32.RESOLUTION;
 
         // change = data0.NP*Math.mulDiv(temprate, k << FixedPoint32.RESOLUTION,(1 << (FixedPoint32.RESOLUTION+decimal_rateQ)) + rate*k) / FixedPoint32.Q32 ;
     }
@@ -215,7 +231,10 @@ contract forwardUnit {
     }
 
     function monitor(uint current_time, uint current_rate) public {
-        require(active0 && msg.sender == address(this), "forward setting is not ready");
+        require(
+            active0 && msg.sender == address(this),
+            "forward setting is not ready"
+        );
         require(
             current_time >= expireTime0 ||
                 current_rate >= data0.upperLimit ||
