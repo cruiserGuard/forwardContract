@@ -73,16 +73,17 @@ contract forwardUnit {
         buyAmount = calculate(false, data0.bottomLimit);
         // bottomLiimit is defined maximum of buy side deposited fund
 
-        require(
-            buyAmount > fee0 && sellAmount > fee0,
-            "upperLimit or bottomLimit too low, causing buyAmount or sellAmount insufficient to pay fee"
-        );
+        
     }
 
     function addFund(address owner, uint128 amount) public payable {
         require(
             owner == buyer0 || owner == seller0,
             "the account which deposits fund is neither buyer or seller"
+        );
+        require(
+            buyAmount > fee0 && sellAmount > fee0,
+            "upperLimit or bottomLimit too low, causing buyAmount or sellAmount insufficient to pay fee"
         );
         // if owner is neither buyer or seller, owner must be approved for transfer tokens
         if (owner == buyer0 && (!readybuyer0)) {
