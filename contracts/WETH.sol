@@ -41,6 +41,10 @@ contract WETH9 {
         emit Withdrawal(msg.sender, wad);
     }
 
+    function receive() external payable{
+
+    }
+
     function totalSupply() public view returns (uint) {
         return address(this).balance;
     }

@@ -7,8 +7,8 @@ const fromWei = (value) =>
   utils.formatEther(typeof value === "string" ? value : value.toString());
 
 async function main() {
-  [deployer,user1,user2] = await ethers.getSigners();
-  
+  [deployer, user1, user2] = await ethers.getSigners();
+
 
   console.log("Deploying contracts with the account:", deployer.address);
 
@@ -26,15 +26,15 @@ async function main() {
     JSON.stringify({ address: tokenContract.address }, undefined, 2)
   );
 
-  var amount = toWei(10);
+  var amount = toWei(5);
 
-  await tokenContract.connect(deployer).deposit(({ value: amount }));
+  //await tokenContract.connect(deployer).deposit(({ value: amount }));
   await tokenContract.connect(user1).deposit(({ value: amount }));
   await tokenContract.connect(user2).deposit(({ value: amount }));
 
-  console.log("deployer at ",(await tokenContract.totalSupply()).toString());
-  console.log("user1 balance at ",(await tokenContract.balanceOf(user1.address)).toString());
-  console.log("user2 balance at ",(await tokenContract.balanceOf(user2.address)).toString());
+  console.log("deployer at ", (await tokenContract.totalSupply()).toString());
+  console.log("user1 balance at ", (await tokenContract.balanceOf(user1.address)).toString());
+  console.log("user2 balance at ", (await tokenContract.balanceOf(user2.address)).toString());
 }
 
 // We recommend this pattern to be able to use async/await everywhere

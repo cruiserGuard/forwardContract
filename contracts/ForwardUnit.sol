@@ -77,13 +77,14 @@ contract forwardUnit {
     }
 
     function addFund(address owner, uint128 amount) public payable {
-        require(
-            owner == buyer0 || owner == seller0,
-            "the account which deposits fund is neither buyer or seller"
-        );
+
         require(
             buyAmount > fee0 && sellAmount > fee0,
             "upperLimit or bottomLimit too low, causing buyAmount or sellAmount insufficient to pay fee"
+        );
+        require(
+            owner == buyer0 || owner == seller0,
+            "the account which deposits fund is neither buyer or seller"
         );
         // if owner is neither buyer or seller, owner must be approved for transfer tokens
         if (owner == buyer0 && (!readybuyer0)) {
@@ -100,7 +101,7 @@ contract forwardUnit {
                 "the required sellAmount is not same as given fund"
             );
             //(bool sucess,) = currency0.call(abi.encodeWithSignature("transferFrom(address,address,uint)",seller0,address(this),amount) );
-            WETH9(currency0).transferFrom(buyer0, address(this), amount);
+            WETH9(currency0).transferFrom(seller0, address(this), amount);
             readyseller0 = true;
         }
         if (readybuyer0 && readyseller0 && (!active0)) {
