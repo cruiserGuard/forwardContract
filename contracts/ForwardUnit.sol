@@ -5,7 +5,7 @@ pragma solidity ^0.8.0;
 import "./oracle.sol";
 import "./utilis.sol";
 import "./interfaces/Math.sol";
-import "hardhat/console.sol";
+//import "hardhat/console.sol";
 import "./WETH.sol";
 
 contract forwardUnit {
@@ -107,9 +107,9 @@ contract forwardUnit {
         if (readybuyer0 && readyseller0 && (!active0)) {
             //require(WETH9(currency0).balanceOf(address(this)) >= buyAmount + sellAmount,"fund is mismatch from sum of buyAmount and sellAmount");
             active0 = true;
-            console.log(
-                "forward is active and do not forget to register contract address in chainlink"
-            );
+            // console.log(
+            //     "forward is active and do not forget to register contract address in chainlink"
+            // );
             chainLinkOracle oracle = new chainLinkOracle(
                 data0.AddressReferenceRate,
                 address(this),

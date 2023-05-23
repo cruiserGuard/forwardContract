@@ -3,7 +3,12 @@ pragma solidity ^0.8.0;
 
 import "./interfaces/AggregatorV3Interface.sol";
 import "./interfaces/KeeperCompatibleInterface.sol";
-import "./ForwardUnit.sol";
+
+//import "./ForwardUnit.sol";
+
+// interface IForwardUnit{
+//     monitor(uint current_time, uint current_rate) public ;
+// }
 
 contract chainLinkOracle is KeeperCompatibleInterface {
     AggregatorV3Interface internal dataFeed;
@@ -13,9 +18,8 @@ contract chainLinkOracle is KeeperCompatibleInterface {
     uint public lastTimeStamp;
     address immutable forward0;
     address public immutable source;
-  
-    constructor(address source_,address contract_,uint updateInterval)  
-    {
+
+    constructor(address source_, address contract_, uint updateInterval) {
         forward0 = contract_;
         source = source_;
         interval = updateInterval;
@@ -23,10 +27,9 @@ contract chainLinkOracle is KeeperCompatibleInterface {
         lastTimeStamp = block.timestamp;
     }
 
-
     function getLatestData() internal view returns (int) {
         (
-            uint80 roundID, 
+            uint80 roundID,
             int answer,
             uint startedAt,
             uint updatedAt,
@@ -35,9 +38,10 @@ contract chainLinkOracle is KeeperCompatibleInterface {
         return answer;
     }
 
-    // function checkUpkeep(bytes calldata /* checkDWata */) view external override returns (bool upkeepNeeded, bytes memory /* performData */) 
-    function checkUpkeep(bytes calldata /* checkDWata */) view external override returns (bool upkeepNeeded, bytes memory  ) 
-    {
+    // function checkUpkeep(bytes calldata /* checkDWata */) view external override returns (bool upkeepNeeded, bytes memory /* performData */)
+    function checkUpkeep(
+        bytes calldata /* checkDWata */
+    ) external view override returns (bool upkeepNeeded, bytes memory) {
         upkeepNeeded = (block.timestamp - lastTimeStamp) > interval;
 
         // We don't use the checkData in this example. The checkData is defined when the Upkeep was registered.
@@ -45,12 +49,16 @@ contract chainLinkOracle is KeeperCompatibleInterface {
 
     function performUpkeep(bytes calldata /* performData */) external override {
         lastTimeStamp = block.timestamp;
-        uint currentRate = uint(getLatestData());       
+        uint currentRate = uint(getLatestData());
         // forwardUnit(forward0).monitor(lastTimeStamp,currentRate);   // pass
         // (bool success, bytes memory result) = forward0.call("monitor(uint,uint)","lastTimeStamp","currentRate");
-        (bool success, bytes memory result) = forward0.call{gas:50000}(abi.encodeWithSignature("monitor(uint,uint)",lastTimeStamp,currentRate)); // pass
-        require(success,"call monitor failed");
-    }  
-
-
+        (bool success, bytes memory result) = forward0.call{gas: 50000}(
+            abi.encodeWithSignature(
+                "monitor(uint,uint)",
+                lastTimeStamp,
+                currentRate
+            )
+        ); // pass
+        require(success, "call monitor failed");
+    }
 }

@@ -26,12 +26,14 @@ async function main() {
     JSON.stringify({ address: tokenContract.address }, undefined, 2)
   );
 
-  var amount = toWei(5);
-
-  //await tokenContract.connect(deployer).deposit(({ value: amount }));
-  await tokenContract.connect(user1).deposit(({ value: amount }));
-  await tokenContract.connect(user2).deposit(({ value: amount }));
-
+  const amount = toWei(0.1);
+  const amount1 = toWei(0.25);
+  await tokenContract.connect(deployer).deposit(({ value: amount1 }));
+  // await tokenContract.connect(user1).deposit(({ value: amount }));
+  // await tokenContract.connect(user2).deposit(({ value: amount }));
+  
+  await tokenContract.connect(deployer).transfer(user1.address,amount);
+  await tokenContract.connect(deployer).transfer(user2.address,amount);
   console.log("deployer at ", (await tokenContract.totalSupply()).toString());
   console.log("user1 balance at ", (await tokenContract.balanceOf(user1.address)).toString());
   console.log("user2 balance at ", (await tokenContract.balanceOf(user2.address)).toString());
