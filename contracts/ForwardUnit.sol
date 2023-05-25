@@ -17,6 +17,7 @@ contract forwardUnit {
     address private provider0;
     uint256 private fee0;
     uint128 public referenceRate0;
+    address private oracle0;
     // uint256 public time0;
 
     bool readybuyer0 = false;
@@ -39,6 +40,12 @@ contract forwardUnit {
         uint32 period,
         uint128 NP
     );
+
+    event Monitor(
+        uint256 time,
+        uint256 rate
+    );
+
 
     constructor(
         address buyer_,
@@ -76,7 +83,8 @@ contract forwardUnit {
         
     }
 
-    function addFund(address owner, uint128 amount) public payable {
+    function addFund(address owner, uint128 amount) public payable 
+    {
 
         require(
             buyAmount > fee0 && sellAmount > fee0,
@@ -115,6 +123,7 @@ contract forwardUnit {
                 address(this),
                 10
             );
+            oracle0 = address(oracle);
             emit Setup(buyer0, seller0, data0.target, data0.period, data0.NP);
         }
     }
@@ -127,8 +136,18 @@ contract forwardUnit {
         provider0 = NewProvider;
     }
 
-    function isActive() public view returns (bool) {
-        return active0;
+    // function isActive() public view returns (bool) {
+    //     return active0;
+    // }
+
+    function getStatus() public view returns(bool,bool ,bool)
+    {
+        return (readybuyer0,readyseller0,active0);
+    }
+
+    function getOracle() public view returns(address)
+    {
+        return oracle0;
     }
 
     function getContent()
@@ -223,7 +242,7 @@ contract forwardUnit {
         // change = data0.NP*Math.mulDiv(temprate, k << FixedPoint32.RESOLUTION,(1 << (FixedPoint32.RESOLUTION+decimal_rateQ)) + rate*k) / FixedPoint32.Q32 ;
     }
 
-    function stop() public {
+    function stopButton() public {
         require(
             msg.sender == provider0 &&
                 WETH9(currency0).balanceOf(address(this)) >=
@@ -244,6 +263,7 @@ contract forwardUnit {
             "working"
         );
         bool payContract = false;
+        emit Monitor(current_time,current_rate);
         // bool hitTime = false;
         // bool hitUpper = false;
         // bool hitBottom = false;
