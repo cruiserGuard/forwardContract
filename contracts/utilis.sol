@@ -1,22 +1,23 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: MIT
 
 pragma solidity ^0.8.0;
 
-struct contractData{
-        address   token;  // currency in contract
-        address   AddressReferenceRate;   // benchmark rate
-        uint8     decimal;                // benchamrk rate decimal
-        uint32    period; // days
-        uint128   NP;     // Notional Principal
-        uint32    target;  // target rate
-        uint128   upperLimit;   // boundry
-        uint128   bottomLimit;  // boundry
-        uint256   inception;        // block time
-    }
+struct contractData {
+    address token; // currency in contract
+    address AddressReferenceRate; // benchmark rate
+    uint8 decimal; // benchamrk rate decimal
+    uint32 period; // days
+    uint128 NP; // Notional Principal
+    uint32 target; // target rate
+    uint128 upperLimit; // boundry
+    uint128 bottomLimit; // boundry
+    uint256 inception; // block time
+}
 
 library FixedPoint192 {
     uint8 internal constant RESOLUTION = 192;
-    uint256 internal constant Q192 = 0x1000000000000000000000000000000000000000000000000;
+    uint256 internal constant Q192 =
+        0x1000000000000000000000000000000000000000000000000;
 }
 
 library FixedPoint128 {
@@ -48,4 +49,3 @@ library FixedPoint32 {
     uint8 internal constant RESOLUTION = 32;
     uint256 internal constant Q32 = 0x10000;
 }
-

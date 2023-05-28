@@ -1,27 +1,18 @@
 {
-    "buyer": "0xDd0b121D5d988bb8C0c4444941E2f7458a73C61A",
-    "seller": "0x81DF49849506Ae4Cb487aAcE2ad8298b19Be8179",
+    "buyer": "",
+    "seller": "",
     "parameters": {
-        "token": "0x65D94Bc7a499f17b831098C6cB7f999c04834134",
+        "token": "0x54ED8D146B452b1EaF483fC6694986a58a008c72",
         "AddressReferenceRate": "0x7422A64372f95F172962e2C0f371E0D9531DF276",
         "decimal": 7,
         "period": 90,
-        "NP": 1000000000000000000,
+        "NP": "100000000000000000",
         "target": 531005,
         "upperLimit": 556016,
         "bottomLimit": 450035,
-        "inception": 1683641034
+        "inception": 1716038813
     },
-    "list": [
-        "0xc72042Ee645be7eB7EB9A689f636ddc0bf5c8717",
-        "0x7422A64372f95F172962e2C0f371E0D9531DF276",
-        7,
-        90,
-        1000000000000000000000000,
-        531005,
-        556016,
-        450035,
-        1683641034
-    ],
-    "feeRate": 1
+    
+    "feeRate": 1,
+    "interval":10
 }
