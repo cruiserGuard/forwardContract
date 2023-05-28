@@ -17,22 +17,6 @@ const defaultNetwork = 'good';
 // console.log(PRIVATE_KEY1);
 // console.log(URL1);
 
-// This is a sample Hardhat task. To learn how to create your own go to
-// https://hardhat.org/guides/create-task.html
-// task("accounts", "Prints the list of accounts", async () => {
-//   const accounts = await ethers.getSigners();
-
-//   for (const account of accounts) {
-//     console.log(account.address);
-//   }
-// });
-
-// function mnemonic() {
-
-//   return process.env.WALLET_PRIVATE_KEY
-
-// }
-
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
@@ -61,10 +45,6 @@ module.exports = {
       url: URL1,
       accounts: [PRIVATE_KEY1],
     },
-    sepolia1: {
-      url: URL3,
-      accounts: [PRIVATE_KEY3],
-    },
     goerli: {
       url: URL2,
       accounts: [PRIVATE_KEY2],
@@ -78,16 +58,7 @@ module.exports = {
       blockGasLimit: 1000000000429720,
       // allowUnlimitedContractSize: true,
     },
-  },
-  // namedAccounts: {
-  //   deployer: {
-  //     default: 0, // here this will by default take the first account as deployer
-  //     1: 0 // similarly on mainnet it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
-  //   },
-  //   feeCollector: {
-  //     default: 1
-  //   }
-  // },
+  }
 
   solidity: {
     compilers: [
@@ -99,7 +70,7 @@ module.exports = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 888888888888888,
+        runs: 88888888,
       },
     }
   },
