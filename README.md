@@ -9,3 +9,24 @@ Due to deploy contracts in Ethereum blockchain incurs Gas(cost). And so does app
 
 ## oracle service
 The contract reads a 90-Day ETH APR from chainLink datafeed. And it is treated benchmark rate. Then it will trigger actions if net present value of FRA reaches threshold or the settlement day. 
+
+## Setup
+Proper setup upperLimit, bottomLimit and inception(This is expire day but it is called inception in forward) in scripts/parameters.json .
+The forward contract will payoff only when it hit by upperLimit, bottomLimit and time(expires)
+
+## Install hardhat
+npm init -y
+npx install hardhat
+
+And install required dependencies
+
+## run the contract
+npx hardhat run scripts/deployETH.js --network sepolia
+
+This script will deploy WETH token that is treated "money" in this forward contract for payoff
+When WETH is deployed, find WETH address in scripts/tokenContractaddress.json
+And put this address in parameters.json under the parameters/token.
+
+npx hardhat run scripts/deployForward.js --network sepolia
+
+This script will deploy forward contract and oracle contract, and query data of chainlink 90-Day ETH APR in every 10s.(parameters.json's interval represents it)
