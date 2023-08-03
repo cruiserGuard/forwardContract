@@ -139,8 +139,7 @@ contract forwardUnit {
         if (readybuyer0 && readyseller0 && (!active0) && readyFund0) {
             
             active0 = true;
-            readyFund0 = false;
-           
+            readyFund0 = false;        
             emit Ready(buyer0, seller0, data0.target, data0.period, data0.NP);
         }
     }
